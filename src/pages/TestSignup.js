@@ -24,20 +24,37 @@ const {
         userId: ''
       , userPwd: ''
       , userPwdChk: ''
+      , allYn: false
       , termsYn: false
+      , optionYn: false
     } ,
   });
 
 const userPwd = watch("userPwd");
-const currentPwd = useRef();
+const allYn = watch("allYn");
+
+
+useEffect(() => {
+
+  setValue("termsYn", allYn? true : false);
+  setValue("optionYn", allYn? true : false);
+
+},[allYn])
 
 
 const onSubmit = (data) => {
-  console.log("data: ", data)
+
+  if(getValues("allYn") || getValues("termsYn")){
+
+    console.log("data: ", data)
+    console.log("values: ", getValues())
+  }
+  
 }
 
 const onError = (error) => {
   console.log("error: ", error);
+
 }
 
 
@@ -73,7 +90,6 @@ const onError = (error) => {
             type="text"
             name="userPwd"
             placeholder="비밀번호"
-            ref={currentPwd}
             {...register("userPwd", {
               required: {
                 value: true, 
@@ -110,15 +126,56 @@ const onError = (error) => {
         </InputItem>
         <Err>{errors.userPwdChk && <p>{errors.userPwdChk.message}</p>}</Err>
 
-        <InputItem>
-          <label htmlFor='termsYn'>동의</label>
+        <TermsItem>
+          <label htmlFor='allYn'>
           <input
             type="checkbox"
-            className="checkbox"
-            value="false"
+            name="allYn"
+            id="allYn"
+            {...register("allYn", {
+              required: {
+                valueAsBoolean: true
+              }
+              })
+            }
             >
           </input>
-        </InputItem> 
+          전체동의</label>
+        </TermsItem>
+        <TermsItem>
+        <label htmlFor='termsYn'>
+          <input
+            type="checkbox"
+            name="termsYn"
+            id="termsYn"
+            {...register("termsYn", {
+              required: {
+                valueAsBoolean: true
+              }
+              })
+            }
+            >
+          </input>
+          필수동의</label>
+        </TermsItem>
+        <TermsItem>
+        <label htmlFor='optionYn'>
+          <input
+            type="checkbox"
+            name="optionYn"
+            id="optionYn"
+            {...register("optionYn", {
+              required: {
+                valueAsBoolean: false
+              }
+              })
+            }
+            >
+          </input>
+          선택동의</label>
+        </TermsItem> 
+        <Err>{errors.termsYn && <p>{errors.termsYn.message}</p>}</Err>
+
         <button type="submit">제출</button>
       </form>
       <DevTool control={control} />
@@ -159,6 +216,14 @@ const InputItem = styled.div`
     padding: 5px;
   }
 `
+const TermsItem = styled.div`
+  width: 300px;
+  display: flex;
+  margin: 10px;
+  padding: 10px;
+
+`
+
 const Err = styled.div`
     width: 50%;
     font-size: 10px;
