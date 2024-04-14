@@ -113,7 +113,10 @@ const onError = (error) => {
         <InputItem>
           <label htmlFor='termsYn'>동의</label>
           <input
-            type="checkbox">
+            type="checkbox"
+            className="checkbox"
+            value="false"
+            >
           </input>
         </InputItem> 
         <button type="submit">제출</button>
