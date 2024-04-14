@@ -110,9 +110,12 @@ const onError = (error) => {
         </InputItem>
         <Err>{errors.userPwdChk && <p>{errors.userPwdChk.message}</p>}</Err>
 
-            
-
-
+        <InputItem>
+          <label htmlFor='termsYn'>동의</label>
+          <input
+            type="checkbox">
+          </input>
+        </InputItem> 
         <button type="submit">제출</button>
       </form>
       <DevTool control={control} />
