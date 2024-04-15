@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { DevTool } from '@hookform/devtools'
 import _ from 'lodash';
+import { getValue } from "@testing-library/user-event/dist/utils";
 
 function TestSignup() {
 
@@ -16,6 +17,7 @@ const {
   , setError
   , setFocus 
   , clearErrors
+  , trigger
   , control
   , formState: { errors, isSubmitting, isDirty, dirtyFields, } 
 } = useForm({
@@ -30,24 +32,41 @@ const {
     } ,
   });
 
+const userId = watch("userId");
 const userPwd = watch("userPwd");
 const allYn = watch("allYn");
 
 
-useEffect(() => {
 
+useEffect(() => {
   setValue("termsYn", allYn? true : false);
   setValue("optionYn", allYn? true : false);
-
 },[allYn])
 
 
-const onSubmit = (data) => {
+// id중복확인 검사.
+const checkId = async (e, id) => {
 
+  e.preventDefault();
+  const isValidId = await trigger("userId");
+
+  if(!isValidId){
+    console.log("유효성검사 실시")
+    return;
+  }
+
+  //서버로 보내중복을 확인하는 로직
+  console.log(getValues("userId"))
+  console.log("서버에서 중복확인")
+
+}
+
+const onSubmit = (data) => {
+  // isValidId
   if(getValues("allYn") || getValues("termsYn")){
 
     console.log("data: ", data)
-    console.log("values: ", getValues())
+    console.log("제출")
   }
   
 }
@@ -83,7 +102,8 @@ const onError = (error) => {
           ></input>
         </InputItem>
         <Err>{errors.userId && <p>{errors.userId.message}</p>}</Err>
-
+        <button onClick={(e) => 
+          checkId(e, getValues("userId"))}>확인</button>
         <InputItem>
           <label htmlFor='userPwd'>비밀번호</label>
           <input
@@ -118,7 +138,7 @@ const onError = (error) => {
               },
               validate: {
                 matchPwd: (value) => 
-                  value === userPwd || "일치하지 않습니다."
+                  value === getValue("userPwd") || "일치하지 않습니다."
               }
               })
             }
