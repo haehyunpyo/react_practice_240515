@@ -20,16 +20,16 @@ function TestListRef() {
       <h3>Test</h3>
       <Container>
         <ListBox>
-          <li onClick={handleClick} ref={prevList}>
+          <li onClick={handleClick}>
             <input type="text" readOnly defaultValue={"리스트1"}></input>
           </li>
-          <li onClick={handleClick} ref={prevList}>
+          <li onClick={handleClick}>
             <input type="text" readOnly defaultValue={"리스트2"}></input>
           </li>
-          <li onClick={handleClick} ref={prevList}>
+          <li onClick={handleClick}>
             <input type="text" readOnly defaultValue={"리스트3"}></input>
           </li>
-          <li onClick={handleClick} ref={prevList}>
+          <li onClick={handleClick}>
             <input type="text" readOnly defaultValue={"리스트4"}></input>
           </li>
         </ListBox>
